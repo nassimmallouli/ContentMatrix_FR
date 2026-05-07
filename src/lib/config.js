@@ -126,7 +126,8 @@ export const MIME_TO_TYPE = {
   "application/vnd.ms-excel": "text",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "text",
   "application/vnd.ms-excel.sheet.macroEnabled.12": "text",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.template": "text",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.template":
+    "text",
   "text/csv": "text",
   "application/csv": "text",
   "application/x-excel": "text",
@@ -135,8 +136,10 @@ export const MIME_TO_TYPE = {
   "application/vnd.oasis.opendocument.text": "text",
   "application/vnd.oasis.opendocument.presentation": "text",
   "application/vnd.ms-powerpoint": "text",
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation": "text",
-  "application/vnd.openxmlformats-officedocument.presentationml.slideshow": "text",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+    "text",
+  "application/vnd.openxmlformats-officedocument.presentationml.slideshow":
+    "text",
 };
 
 export function detectTypeFromFile(file) {
@@ -227,4 +230,11 @@ export function detectDomainFromName(name) {
   return null;
 }
 
-export const API_BASE = "/api";
+function normalizeApiBaseUrl(value) {
+  const base = (value || "").trim().replace(/\/$/, "");
+  if (!base) return "/api";
+  if (base.endsWith("/api")) return base;
+  return `${base}/api`;
+}
+
+export const API_BASE = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
