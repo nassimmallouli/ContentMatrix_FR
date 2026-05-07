@@ -237,4 +237,17 @@ function normalizeApiBaseUrl(value) {
   return `${base}/api`;
 }
 
-export const API_BASE = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
+function getDefaultApiBaseUrl() {
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1" || host.endsWith(".local")) {
+      return "/api";
+    }
+  }
+
+  return "https://contentmatrix-ba-1.onrender.com/api";
+}
+
+export const API_BASE = normalizeApiBaseUrl(
+  import.meta.env.VITE_API_BASE_URL || getDefaultApiBaseUrl()
+);
